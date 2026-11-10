@@ -33,11 +33,15 @@ html.dark body[data-tab="movies"] {--accent-fg:#E59A8D; --accent-soft:#4E2C27}
 html.dark body[data-tab="shows"]  {--accent-fg:#A7B1EC; --accent-soft:#2E3459}
 html.dark body[data-tab="recipes"]{--accent-fg:#EDA875; --accent-soft:#4E3423}
 html.dark body[data-tab="chores"] {--accent-fg:#86C9CC; --accent-soft:#22403F}
+html.dark body[data-tab="bloom"]  {--accent-fg:#F293AE; --accent-soft:#4A2533}
+html.dark body[data-tab="bloom"][data-mode="preg"] {--accent-fg:#C3AEEA; --accent-soft:#352A4C}
 body[data-tab="books"]  {--accent:#2F5D4A; --accent-soft:#DCE7DF}
 body[data-tab="movies"] {--accent:#9A3B2E; --accent-soft:#F2DDD7}
 body[data-tab="shows"]  {--accent:#36427E; --accent-soft:#DEE1F1}
 body[data-tab="recipes"]{--accent:#B8612A; --accent-soft:#F6E3D1}
 body[data-tab="chores"] {--accent:#2A6F73; --accent-soft:#D6EBEA}
+body[data-tab="bloom"]  {--accent:#C2456B; --accent-soft:#F9DDE5}
+body[data-tab="bloom"][data-mode="preg"] {--accent:#7656A8; --accent-soft:#ECE4F6}
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
 html{background:var(--paper)}
 body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.4;
@@ -243,9 +247,9 @@ details.more summary::-webkit-details-marker{display:none}
 
 /* ---------- tab bar ---------- */
 .tabbar{position:fixed; left:0; right:0; bottom:0; z-index:20; background:color-mix(in srgb, var(--card) 90%, transparent); backdrop-filter:blur(16px) saturate(1.4); -webkit-backdrop-filter:blur(16px) saturate(1.4); border-top:1px solid var(--line); padding:8px 10px calc(8px + var(--safe-b))}
-.tabbar nav{max-width:560px; margin:0 auto; display:grid; grid-template-columns:repeat(5,1fr)}
-.tab{display:flex; flex-direction:column; align-items:center; gap:3px; font-size:11px; font-weight:600; color:var(--faint); padding:4px 0}
-.tab .pill{width:52px; height:30px; border-radius:15px; display:grid; place-items:center; transition:background .2s}
+.tabbar nav{max-width:560px; margin:0 auto; display:grid; grid-template-columns:repeat(6,1fr)}
+.tab{display:flex; flex-direction:column; align-items:center; gap:3px; font-size:10.5px; font-weight:600; color:var(--faint); padding:4px 0}
+.tab .pill{width:44px; height:30px; border-radius:15px; display:grid; place-items:center; transition:background .2s}
 .tab.on{color:var(--accent-fg)}
 .tab.on .pill{background:var(--accent-soft)}
 .tab .ic{width:22px; height:22px}
@@ -325,6 +329,82 @@ html.dark .due.late, html.dark .late{color:#F08A78}
 .sugg button{padding:8px 11px; border-radius:11px; background:var(--accent-soft); color:var(--accent-fg); font-weight:600; font-size:13px}
 .sugg small{opacity:.7; font-weight:500; margin-left:3px}
 input[type=date]{min-height:46px; -webkit-appearance:none; appearance:none}
+.mode-seg{margin:-4px 0 16px}
+.wstrip{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:6px}
+.wd{display:flex; flex-direction:column; align-items:center; gap:4px; padding:4px 0}
+.wd small{font-size:11px; color:var(--muted); font-weight:600}
+.wd.today small{color:var(--accent-fg)}
+.wd .cd{width:38px; height:38px}
+.ring-wrap{display:grid; place-items:center; margin:4px 0 6px}
+.ring-box{position:relative; width:min(86vw, 320px); aspect-ratio:1}
+.ring-svg{width:100%; height:100%}
+.ring-center{position:absolute; inset:16%; border-radius:50%; background:radial-gradient(circle at 50% 35%, var(--card), var(--accent-soft)); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:10px; box-shadow:inset 0 0 0 1px var(--line)}
+.rc-day{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:700}
+.rc-big{font-family:var(--display); font-size:28px; font-weight:600; line-height:1.05; margin:6px 0 4px; letter-spacing:-.02em}
+.rc-small{font-size:13px; color:var(--accent-fg); font-weight:600}
+.ring-btn{margin-top:12px; padding:9px 16px; border-radius:20px; font-size:14px}
+.phase-card{background:var(--card); border:1px solid var(--line); border-left:6px solid var(--pc); border-radius:var(--r); padding:16px 18px; margin-top:14px}
+.pc-k{font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:700}
+.pc-n{font-family:var(--display); font-size:22px; font-weight:600; color:var(--pc); margin:2px 0 6px}
+.phase-card p{margin:0 0 8px; font-size:14.5px; line-height:1.5}
+.phase-card ul{margin:0; padding-left:18px; font-size:14px; color:var(--muted); line-height:1.55}
+.pred-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.pg{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:14px; position:relative}
+.pg small{display:block; font-size:12px; color:var(--muted); font-weight:600}
+.pg b{display:block; font-family:var(--display); font-size:18px; font-weight:600; margin:4px 0 2px}
+.pg em{font-style:normal; font-size:12px; color:var(--accent-fg); font-weight:600}
+.pg .dot{position:absolute; top:14px; right:14px; width:10px; height:10px; border-radius:50%}
+.today-log{width:100%; text-align:left; display:block}
+.cal{display:grid; grid-template-columns:repeat(7,1fr); gap:4px 2px; text-align:center}
+.cal .dow{font-size:11px; font-weight:700; color:var(--faint); padding:4px 0}
+.cd{position:relative; width:38px; height:38px; margin:0 auto; border-radius:50%; display:grid; place-items:center; font-size:14px; font-weight:600}
+.cd.period{background:#E0567A; color:#fff}
+.cd.pred{border:2px dashed #E0567A; color:#E0567A}
+.cd.fertile{background:#D8EFEB; color:#1F6F64}
+.cd.ov{background:#3FA394; color:#fff}
+html.dark .cd.fertile{background:#1F3F3A; color:#8FD3C8}
+.cd.today{box-shadow:0 0 0 2px var(--ink)}
+.cd i{position:absolute; bottom:3px; left:50%; width:4px; height:4px; margin-left:-2px; border-radius:50%; background:currentColor; opacity:.7}
+.legend{display:flex; flex-wrap:wrap; gap:6px 14px; justify-content:center; margin-top:12px; font-size:12px; color:var(--muted)}
+.legend i{display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:5px; vertical-align:-1px}
+.legend .period{background:#E0567A} .legend .pred{border:2px dashed #E0567A} .legend .fertile{background:#BFE4DE} .legend .ov{background:#3FA394}
+.disclaimer{text-align:center; font-size:12px; margin:22px 10px 0}
+.bloom-start{text-align:center} .bloom-start h2{margin:6px 0} .bloom-start form{text-align:left; margin-top:14px}
+.lg-h{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:18px 0 8px}
+.lchips{display:flex; flex-wrap:wrap; gap:7px}
+.lchip{padding:8px 13px; border-radius:20px; background:var(--paper); border:1px solid var(--line); font-size:14px; font-weight:600}
+.lchip.on{background:var(--accent); color:#fff; border-color:var(--accent)}
+.cyc{padding:12px 0; border-bottom:1px dashed var(--line)} .cyc:last-child{border-bottom:0}
+.cyc-bar{display:flex; height:10px; border-radius:6px; background:var(--well); overflow:hidden; margin:8px 0 6px}
+.cyc-bar .p{background:#E0567A} .cyc-bar .r{background:#F4B6C6}
+.preg-hero{border-radius:28px; padding:20px; color:#2B2140; background:linear-gradient(160deg, #EFE4FA 0%, #F9E3EA 55%, #FCEBDD 100%); position:relative; overflow:hidden}
+.preg-hero::after{content:""; position:absolute; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,.35); right:-70px; top:-80px}
+.ph-top{display:flex; justify-content:space-between; align-items:flex-start; position:relative; z-index:1}
+.ph-k{font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; opacity:.6}
+.ph-w{font-family:var(--display); font-size:32px; font-weight:600; letter-spacing:-.02em; line-height:1.1}
+.ph-t{font-size:14px; font-weight:600; color:#7656A8; margin-top:2px}
+.ph-nav{display:flex; gap:6px} .ph-nav button{width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.7); display:grid; place-items:center; color:#2B2140}
+.baby{text-align:center; position:relative; z-index:1; margin-top:8px}
+.baby-orb{width:170px; height:170px; margin:6px auto 12px; border-radius:50%; background:radial-gradient(circle at 40% 35%, #fff, rgba(255,255,255,.55) 60%, rgba(255,255,255,.2)); display:grid; place-items:center; font-size:84px; box-shadow:0 20px 50px -20px rgba(118,86,168,.55)}
+.baby-orb span{filter:drop-shadow(0 8px 10px rgba(0,0,0,.15)); animation:bob 4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-4deg)}}
+.baby-k{font-size:13px; opacity:.7; font-weight:600}
+.baby-t{font-family:var(--display); font-size:26px; font-weight:600; margin:2px 0 10px}
+.baby-m{display:inline-flex; gap:10px} .baby-m span{background:rgba(255,255,255,.65); border-radius:14px; padding:8px 14px; font-size:12px; opacity:.85} .baby-m b{display:block; font-size:16px; font-family:var(--display)}
+.preg-hero .sub{color:#5C5070}
+.preg-hero .link-btn{color:#7656A8}
+.tri-bar{position:relative; height:12px; border-radius:8px; background:var(--well); overflow:hidden}
+.tri-bar i{position:absolute; left:0; top:0; bottom:0; background:linear-gradient(90deg, #C9B4EA, #7656A8); border-radius:8px}
+.tri-bar span{position:absolute; top:0; bottom:0; width:2px; background:var(--card)}
+.tri-labels{display:grid; grid-template-columns:13fr 14fr 13fr; font-size:11px; color:var(--muted); font-weight:700; margin-top:6px; text-align:center}
+.info-card{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:16px 18px; margin-top:12px}
+.ic-h{font-weight:700; font-size:14px; color:var(--accent-fg); margin-bottom:4px}
+.info-card p{margin:0; font-size:15px; line-height:1.5}
+.bump-main{width:96px; height:128px; border-radius:16px; overflow:hidden; background:var(--accent-soft); display:grid; place-items:center; color:var(--accent-fg); flex:none}
+.bump-main img{width:100%; height:100%; object-fit:cover}
+.bump-strip{display:flex; gap:8px; overflow-x:auto; margin-top:14px; padding-bottom:4px}
+.bump-strip button{flex:none; width:64px; text-align:center; font-size:11px; font-weight:600; color:var(--muted)}
+.bump-strip img{width:64px; height:84px; object-fit:cover; border-radius:10px; margin-bottom:4px}
 .page-input{width:84px; text-align:center; font-family:var(--display); font-size:22px; font-weight:600; padding:8px; border-radius:12px; border:1px solid var(--line); background:var(--paper)}
 </style>
 </head>
@@ -359,6 +439,7 @@ const ICONS = {
   link:'<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
   share:'<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4M12 2v13"/>',
   home:'<path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  flower:'<circle cx="12" cy="12" r="2.6"/><path d="M12 9.4C9.8 6 10.2 3 12 2c1.8 1 2.2 4 0 7.4zM14.6 12c3.4-2.2 6.4-1.8 7.4 0-1 1.8-4 2.2-7.4 0zM12 14.6c2.2 3.4 1.8 6.4 0 7.4-1.8-1-2.2-4 0-7.4zM9.4 12C6 14.2 3 13.8 2 12c1-1.8 4-2.2 7.4 0z"/>',
   play:'<path d="M6 4l14 8-14 8z"/>', refresh:'<path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/>',
   trash:'<path d="M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>',
 };
@@ -424,7 +505,8 @@ const Store = {
     return new Promise(res => { const tx = this.db.transaction('kv', 'readwrite'); tx.objectStore('kv').put(v, k); tx.oncomplete = res; tx.onerror = () => { toast('Could not save'); res(); }; });
   }
 };
-const DEFAULT = () => ({ v: 1, books: [], movies: [], shows: [], recipes: [], cart: [], rooms: [], goal: { year: thisYear(), target: 0 }, prefs: { store: 'instacart' } });
+const DEF_CYCLE = () => ({ periodDays: [], logs: {}, settings: { cycleLen: 28, periodLen: 5 }, mode: 'cycle', preg: null });
+const DEFAULT = () => ({ v: 1, books: [], movies: [], shows: [], recipes: [], cart: [], rooms: [], cycle: DEF_CYCLE(), goal: { year: thisYear(), target: 0 }, prefs: { store: 'instacart' } });
 let S = DEFAULT();
 const save = debounce(() => Store.set('state', JSON.parse(JSON.stringify(S))), 200);
 
@@ -471,7 +553,7 @@ function setBg(c) { S.prefs.bg = c; applyTheme(c); save(); }
 
 /* ---------------- navigation ---------------- */
 let tab = localStorage.getItem('ut-tab') || 'books';
-const stacks = { books: [{v:'home'}], movies: [{v:'home'}], shows: [{v:'home'}], recipes: [{v:'home'}], chores: [{v:'home'}] };
+const stacks = { books: [{v:'home'}], movies: [{v:'home'}], shows: [{v:'home'}], recipes: [{v:'home'}], chores: [{v:'home'}], bloom: [{v:'home'}] };
 let sheet = null, ignorePop = false, afterPop = null;
 const top_ = () => stacks[tab][stacks[tab].length - 1];
 function pushView(v) { stacks[tab].push(v); history.pushState({d: stacks[tab].length}, ''); render(); window.scrollTo(0, 0); }
@@ -927,12 +1009,286 @@ function newChore(roomId, name, freq, lastDone, nextDue) {
 }
 function addRoom(name, emoji) { const r = { id: uid(), name, emoji: emoji || '🏠', chores: [], addedAt: now() }; S.rooms.push(r); return r; }
 
+/* ---------------- bloom: cycle & pregnancy ---------------- */
+const addDays = (s, n) => { const d = parseYMD(s); d.setDate(d.getDate() + n); return ymd(d); };
+const diffDays = (a, b) => Math.round((parseYMD(b) - parseYMD(a)) / 86400000);
+const PHASES = {
+  menstrual: { name: 'Period', color: '#E0567A', blurb: 'Your uterine lining is shedding and estrogen and progesterone are at their lowest, so energy often dips.',
+    tips: ['Rest more and keep a heating pad handy for cramps', 'Iron-rich foods (leafy greens, beans, red meat) help replace what you lose', 'Gentle movement like walking or stretching can ease cramps'] },
+  follicular: { name: 'Follicular phase', color: '#F09BB2', blurb: 'Estrogen is rising as follicles in your ovaries mature. Many people feel more energetic, social and creative.',
+    tips: ['A great time to start new projects or try harder workouts', 'Your skin often looks its clearest now', 'Fuel up with protein and fresh produce'] },
+  ovulation: { name: 'Ovulation window', color: '#3FA394', blurb: 'An LH surge releases an egg — this is when you are most fertile. You may notice clear, stretchy discharge and a boost in libido.',
+    tips: ['Highest chance of pregnancy — plan accordingly either way', 'Some people feel a twinge on one side (mittelschmerz)', 'Energy and confidence often peak'] },
+  luteal: { name: 'Luteal phase', color: '#A58BD0', blurb: 'Progesterone rises to prepare the uterus. Late in this phase PMS can show up: bloating, cravings, mood changes or tender breasts.',
+    tips: ['Magnesium-rich foods (dark chocolate, nuts, seeds) may ease PMS', 'Prioritize sleep and keep caffeine and salt lower', 'Lower-intensity workouts like yoga or pilates can feel better'] },
+  late: { name: 'Period late', color: '#C9864A', blurb: "Your period hasn't started on the predicted day. Stress, travel, illness or changes in routine can all shift a cycle.",
+    tips: ['If there is any chance you are pregnant, a home test is most accurate from the day your period was due', 'Log your period when it starts so predictions stay accurate', 'Talk to your doctor if cycles are often very irregular'] },
+};
+const FLOWS = ['Spotting', 'Light', 'Medium', 'Heavy'];
+const SYMPTOMS = ['Cramps', 'Headache', 'Bloating', 'Tender breasts', 'Acne', 'Backache', 'Fatigue', 'Cravings', 'Nausea', 'Insomnia', 'Discharge'];
+const MOODS = ['Happy', 'Calm', 'Energetic', 'Sensitive', 'Irritable', 'Anxious', 'Sad', 'Low libido', 'High libido'];
+
+function periodRuns() {
+  const days = [...new Set(S.cycle.periodDays)].sort(); const runs = [];
+  for (const d of days) { const last = runs[runs.length - 1]; if (last && diffDays(last.end, d) <= 2) last.end = d; else runs.push({ start: d, end: d }); }
+  runs.forEach(r => r.len = diffDays(r.start, r.end) + 1);
+  return runs;
+}
+function cycleStats() {
+  const runs = periodRuns(), t = todayYMD();
+  const starts = runs.map(r => r.start).filter(s => s <= t);
+  const lens = starts.slice(1).map((s, i) => diffDays(starts[i], s)).filter(l => l >= 15 && l <= 60);
+  const recent = lens.slice(-6);
+  const avgCycle = recent.length ? Math.round(recent.reduce((a, b) => a + b, 0) / recent.length) : (+S.cycle.settings.cycleLen || 28);
+  const pl = runs.filter(r => r.end < t && r.len <= 12).map(r => r.len).slice(-6);
+  const avgPeriod = pl.length ? Math.round(pl.reduce((a, b) => a + b, 0) / pl.length) : (+S.cycle.settings.periodLen || 5);
+  const variation = recent.length >= 2 ? Math.max(...recent) - Math.min(...recent) : null;
+  return { runs, lens, avgCycle, avgPeriod, variation };
+}
+function cycleNow(st) {
+  const t = todayYMD(); const past = st.runs.filter(r => r.start <= t); if (!past.length) return null;
+  const cur = past[past.length - 1], L = st.avgCycle, day = diffDays(cur.start, t) + 1;
+  const ovDay = Math.max(st.avgPeriod + 3, L - 14);
+  const inPeriod = t <= cur.end;
+  let phase = inPeriod ? 'menstrual' : day > L ? 'late' : (day >= ovDay - 1 && day <= ovDay + 1) ? 'ovulation' : day < ovDay ? 'follicular' : 'luteal';
+  const nextStart = addDays(cur.start, L);
+  const fertileStart = addDays(cur.start, ovDay - 6), fertileEnd = addDays(cur.start, ovDay);
+  let ovDate = addDays(cur.start, ovDay - 1); if (ovDate < t) ovDate = addDays(nextStart, ovDay - 1);
+  let fS = fertileStart, fE = fertileEnd; if (fE < t) { fS = addDays(nextStart, ovDay - 6); fE = addDays(nextStart, ovDay); }
+  return { cur, day, L, ovDay, phase, nextStart, daysToNext: diffDays(t, nextStart), ovDate, daysToOv: diffDays(t, ovDate), fertileStart: fS, fertileEnd: fE,
+    fertileNow: t >= fertileStart && t <= fertileEnd, inPeriod, periodDay: inPeriod ? day : 0, periodLeft: inPeriod ? diffDays(t, cur.end) : 0 };
+}
+function dayType(d, st, now) {
+  const set = dayType._set; if (set.has(d)) return 'period';
+  if (!now) return '';
+  const t = todayYMD(), base = now.cur.start, L = st.avgCycle;
+  if (d < base) return '';
+  for (let k = 0; k <= 8; k++) {
+    const s = addDays(base, k * L);
+    if (k > 0 && d >= t && d >= s && d <= addDays(s, st.avgPeriod - 1)) return 'pred';
+    const ov = addDays(s, now.ovDay - 1);
+    if (d === ov) return 'ov';
+    if (d >= addDays(ov, -5) && d <= addDays(ov, 1)) return 'fertile';
+  }
+  if (now.phase === 'late' && d >= t && d <= addDays(t, st.avgPeriod - 1)) return 'pred';
+  return '';
+}
+function polar(cx, cy, r, deg) { const a = (deg - 90) * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+function arcPath(cx, cy, r, a0, a1) { const [x0, y0] = polar(cx, cy, r, a0), [x1, y1] = polar(cx, cy, r, a1); return `M${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`; }
+function cycleRing(st, now) {
+  const size = 280, c = size / 2, r = 120, L = now.L, per = 360 / L, gap = 2.2;
+  const seg = [[1, st.avgPeriod, PHASES.menstrual.color], [st.avgPeriod + 1, now.ovDay - 6, PHASES.follicular.color], [now.ovDay - 5, now.ovDay + 1, PHASES.ovulation.color], [now.ovDay + 2, L, PHASES.luteal.color]]
+    .filter(([a, b]) => b >= a);
+  const arcs = seg.map(([a, b, col]) => `<path d="${arcPath(c, c, r, (a - 1) * per + gap / 2, b * per - gap / 2)}" stroke="${col}" stroke-width="16" fill="none" stroke-linecap="round"/>`).join('');
+  const dd = Math.min(now.day, L); const [mx, my] = polar(c, c, r, (dd - .5) * per);
+  return `<svg viewBox="0 0 ${size} ${size}" class="ring-svg"><circle cx="${c}" cy="${c}" r="${r}" stroke="var(--well)" stroke-width="16" fill="none"/>${arcs}
+    <circle cx="${mx}" cy="${my}" r="15" fill="var(--card)" stroke="var(--ink)" stroke-width="3"/><text x="${mx}" y="${my + 4.5}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" font-family="Instrument Sans, sans-serif">${now.day}</text></svg>`;
+}
+let calMonth = null;
+function calendarHTML(st, now) {
+  const t = todayYMD(); if (!calMonth) calMonth = t.slice(0, 7);
+  const [y, m] = calMonth.split('-').map(Number); const first = new Date(y, m - 1, 1); const days = new Date(y, m, 0).getDate();
+  dayType._set = new Set(S.cycle.periodDays);
+  let cells = ''; for (let i = 0; i < first.getDay(); i++) cells += '<span></span>';
+  for (let d = 1; d <= days; d++) {
+    const ds = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`; const ty = dayType(ds, st, now); const lg = S.cycle.logs[ds];
+    const hasLog = lg && (lg.flow || (lg.symptoms || []).length || (lg.moods || []).length || lg.note);
+    cells += `<button class="cd ${ty} ${ds === t ? 'today' : ''}" data-action="cday" data-d="${ds}">${d}${hasLog ? '<i></i>' : ''}</button>`;
+  }
+  const label = first.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  return `<div class="panel"><div class="panel-h" style="align-items:center"><button class="icon-btn" data-action="cal-nav" data-n="-1" aria-label="Previous month">${ic('back')}</button><b style="font-family:var(--display);font-size:19px">${label}</b><button class="icon-btn" data-action="cal-nav" data-n="1" aria-label="Next month">${ic('chev')}</button></div>
+    <div class="cal">${['S','M','T','W','T','F','S'].map(x => `<span class="dow">${x}</span>`).join('')}${cells}</div>
+    <div class="legend"><span><i class="period"></i>Period</span><span><i class="pred"></i>Predicted</span><span><i class="fertile"></i>Fertile</span><span><i class="ov"></i>Ovulation</span></div>
+    <div class="sub" style="text-align:center;margin-top:10px">Tap any day to log your period or symptoms</div></div>`;
+}
+function weekStrip(st, now) {
+  dayType._set = new Set(S.cycle.periodDays); const t = todayYMD();
+  return `<div class="wstrip">${[-3, -2, -1, 0, 1, 2, 3].map(o => { const d = addDays(t, o), dt = parseYMD(d);
+    return `<button class="wd ${o === 0 ? 'today' : ''}" data-action="cday" data-d="${d}"><small>${o === 0 ? 'Today' : dt.toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 2)}</small><span class="cd ${dayType(d, st, now)}">${dt.getDate()}</span></button>`; }).join('')}</div>`;
+}
+function modeSwitch() {
+  const m = S.cycle.mode;
+  return `<div class="seg mode-seg"><button class="${m === 'cycle' ? 'on' : ''}" data-action="bloom-mode" data-m="cycle">🌸 Cycle</button><button class="${m === 'preg' ? 'on' : ''}" data-action="bloom-mode" data-m="preg">🤰 Pregnancy</button></div>`;
+}
+function viewCycle() {
+  const st = cycleStats(), now = cycleNow(st);
+  const head = `${brandbar()}<div class="page-head"><h1><em>Bloom</em></h1><button class="icon-btn" data-action="cycle-settings" aria-label="Cycle settings">${ic('edit')}</button></div>${modeSwitch()}`;
+  if (!now) return `${head}<div class="panel bloom-start"><div style="font-size:44px">🌸</div><h2>Let's set up your cycle</h2><p class="sub">Add your last period and Bloom will show your phase, fertile window and next period.</p>
+    <form data-form="cycle-start"><label class="field"><span>When did your last period start?</span><input type="date" name="start" required max="${todayYMD()}"></label>
+    <div class="row"><label class="field" style="flex:1"><span>Cycle length (days)</span><input type="number" name="cycleLen" inputmode="numeric" value="${S.cycle.settings.cycleLen}" min="15" max="60"></label><label class="field" style="flex:1"><span>Period length (days)</span><input type="number" name="periodLen" inputmode="numeric" value="${S.cycle.settings.periodLen}" min="1" max="12"></label></div>
+    <button class="btn block" type="submit">Start tracking</button></form><div class="sub" style="margin-top:12px">Not sure? Leave 28 and 5 — Bloom learns your real averages as you log.</div></div>`;
+  const P = PHASES[now.phase];
+  let big, small, btn;
+  if (now.phase === 'menstrual') { big = `Period`; small = `Day ${now.periodDay}${now.periodLeft > 0 ? ` · about ${plural(now.periodLeft, ['day','days'])} left` : ''}`; btn = now.periodLeft > 0 ? `<button class="btn ring-btn" data-action="period-end">Period ended</button>` : `<button class="btn ring-btn" data-action="period-extend">Still bleeding? +1 day</button>`; }
+  else if (now.phase === 'late') { big = `${plural(-now.daysToNext, ['day','days'])} late`; small = `Expected ${fmtYMD(now.nextStart)}`; btn = `<button class="btn ring-btn" data-action="period-log">Log period</button>`; }
+  else { big = now.daysToNext === 0 ? 'Period today' : `Period in ${plural(now.daysToNext, ['day','days'])}`; small = now.fertileNow ? 'High chance of pregnancy' : now.daysToOv > 0 && now.daysToOv <= 10 ? `Ovulation in ${plural(now.daysToOv, ['day','days'])}` : P.name; btn = `<button class="btn ring-btn" data-action="period-log">Log period</button>`; }
+  const tl = S.cycle.logs[todayYMD()] || {}; const chips = [tl.flow, ...(tl.symptoms || []), ...(tl.moods || [])].filter(Boolean);
+  return `${head}${weekStrip(st, now)}
+  <div class="ring-wrap"><div class="ring-box">${cycleRing(st, now)}<div class="ring-center"><div class="rc-day">Cycle day ${now.day}</div><div class="rc-big">${esc(big)}</div><div class="rc-small">${esc(small)}</div>${btn}</div></div></div>
+  <div class="phase-card" style="--pc:${P.color}"><div class="pc-k">You're in your</div><div class="pc-n">${esc(P.name)}</div><p>${esc(P.blurb)}</p><ul>${P.tips.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+  <h3>Predictions</h3>
+  <div class="pred-grid">
+    <div class="pg"><span class="dot" style="background:${PHASES.menstrual.color}"></span><small>Next period</small><b>${fmtYMD(now.phase === 'late' ? todayYMD() : now.nextStart)}</b><em>${now.phase === 'late' ? 'any day now' : now.daysToNext === 0 ? 'today' : 'in ' + plural(now.daysToNext, ['day','days'])}</em></div>
+    <div class="pg"><span class="dot" style="background:${PHASES.ovulation.color}"></span><small>Fertile window</small><b>${fmtYMD(now.fertileStart)} – ${fmtYMD(now.fertileEnd)}</b><em>${now.fertileNow ? 'happening now' : 'in ' + plural(diffDays(todayYMD(), now.fertileStart), ['day','days'])}</em></div>
+    <div class="pg"><span class="dot" style="background:#1F6F64"></span><small>Ovulation</small><b>${fmtYMD(now.ovDate)}</b><em>${now.daysToOv === 0 ? 'today' : 'in ' + plural(now.daysToOv, ['day','days'])}</em></div>
+    <div class="pg"><span class="dot" style="background:${PHASES.luteal.color}"></span><small>Average cycle</small><b>${st.avgCycle} days</b><em>period ~${st.avgPeriod} days</em></div>
+  </div>
+  <h3>Today's log</h3>
+  <button class="panel today-log" data-action="cday" data-d="${todayYMD()}">${chips.length ? `<div class="chips" style="justify-content:flex-start;margin:0">${chips.map(c => `<span class="chip">${esc(c)}</span>`).join('')}</div>${tl.note ? `<div class="sub" style="margin-top:8px">${esc(tl.note)}</div>` : ''}` : `<div class="row" style="justify-content:space-between"><span><b>How are you feeling?</b><br><span class="sub">Log flow, symptoms and mood</span></span><span class="chev">${ic('plus')}</span></div>`}</button>
+  <h3>Calendar</h3>${calendarHTML(st, now)}
+  <button class="shelf-row" style="margin-top:12px" data-action="open-cycles"><div class="fan" style="display:grid;place-items:center;font-size:36px">📈</div><div><div class="shelf-title">Cycle history</div><div class="shelf-count">${plural(st.lens.length, ['cycle','cycles'])} logged · avg ${st.avgCycle} days</div></div><span class="chev">${ic('chev')}</span></button>
+  <p class="sub disclaimer">Predictions are estimates based on your logs — they aren't a form of birth control or medical advice.</p>`;
+}
+function viewCycles() {
+  const st = cycleStats(), now = cycleNow(st), t = todayYMD();
+  const pastRuns = st.runs.filter(r => r.start <= t);
+  const rows = pastRuns.map((r, i) => {
+    const next = pastRuns[i + 1]; const len = next ? diffDays(r.start, next.start) : null; const cur = !next;
+    const cyLen = cur ? (now ? now.day : 0) : len;
+    return { r, len: cyLen, cur };
+  }).reverse();
+  const maxL = Math.max(35, ...rows.map(x => x.len || 0));
+  return `<div class="topbar"><button class="back" data-action="back">${ic('back')} Bloom</button></div>
+  <div class="page-head"><h1 style="font-size:38px">Cycle <em>history</em></h1></div>
+  <div class="tiles"><div class="tile"><b>${st.avgCycle}</b>Avg cycle (days)</div><div class="tile"><b>${st.avgPeriod}</b>Avg period (days)</div><div class="tile"><b>${st.variation == null ? '—' : '±' + Math.round(st.variation / 2)}</b>Variation</div></div>
+  ${st.variation != null ? `<p class="sub" style="margin:10px 2px 0">${st.variation <= 7 ? 'Your cycles are fairly regular.' : 'Your cycle length varies more than a week — that can be normal, but mention it to your doctor if it is new.'}</p>` : ''}
+  <h3>All cycles · ${rows.length}</h3>
+  <div class="panel" style="padding:6px 16px">${rows.length ? rows.map(({ r, len, cur }) => `<div class="cyc"><div class="row" style="justify-content:space-between"><b>${fmtYMD(r.start)}${cur ? ' · current' : ''}</b><span class="sub">${cur ? `day ${len}` : plural(len, ['day','days'])}</span></div>
+    <div class="cyc-bar"><i class="p" style="width:${Math.min(r.len, len || r.len) / maxL * 100}%"></i><i class="r" style="width:${Math.max(0, (len || 0) - r.len) / maxL * 100}%;${cur ? 'opacity:.45' : ''}"></i></div>
+    <div class="sub" style="font-size:12px">Period ${plural(r.len, ['day','days'])}${len && !cur ? ` · cycle ${len < 21 ? 'shorter than usual' : len > 35 ? 'longer than usual' : 'in typical range'}` : ''}</div></div>`).join('') : '<div class="sub">No cycles yet.</div>'}</div>
+  <p class="sub disclaimer">A typical cycle is 21–35 days. Tap days in the calendar to fix any period dates.</p>`;
+}
+function cdaySheet() {
+  const d = sheet.d, lg = S.cycle.logs[d] || {}, isP = S.cycle.periodDays.includes(d);
+  const chip = (k, v, on) => `<button type="button" class="lchip ${on ? 'on' : ''}" data-action="clog" data-k="${k}" data-v="${esc(v)}">${esc(v)}</button>`;
+  return { head: `<div class="row"><h2>${parseYMD(d).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</h2><button class="close" data-action="close-sheet" aria-label="Close">${ic('x')}</button></div>`,
+  body: `<button class="btn block ${isP ? '' : 'soft'}" data-action="cday-period">${isP ? '✓ Period day — tap to remove' : '🩸 Mark as period day'}</button>
+    ${isP ? `<div class="lg-h">Flow</div><div class="lchips">${FLOWS.map(f => chip('flow', f, lg.flow === f)).join('')}</div>` : ''}
+    <div class="lg-h">Symptoms</div><div class="lchips">${SYMPTOMS.map(s => chip('symptoms', s, (lg.symptoms || []).includes(s))).join('')}</div>
+    <div class="lg-h">Mood</div><div class="lchips">${MOODS.map(s => chip('moods', s, (lg.moods || []).includes(s))).join('')}</div>
+    <div class="lg-h">Notes</div><textarea class="input" id="cNote" rows="3" placeholder="Anything else to remember?">${esc(lg.note || '')}</textarea>
+    <button class="btn block" style="margin-top:16px" data-action="close-sheet">Done</button>` };
+}
+function cycleSettingsSheet() {
+  const st = cycleStats();
+  return { head: `<div class="row"><h2>Cycle settings</h2><button class="close" data-action="close-sheet" aria-label="Close">${ic('x')}</button></div>`,
+  body: `<form data-form="cycle-settings"><p class="sub" style="margin-top:0">Used until you've logged a few cycles — after that Bloom uses your real averages (currently ${st.avgCycle}-day cycle, ${st.avgPeriod}-day period).</p>
+    <div class="row"><label class="field" style="flex:1"><span>Cycle length</span><input type="number" name="cycleLen" inputmode="numeric" min="15" max="60" value="${S.cycle.settings.cycleLen}"></label><label class="field" style="flex:1"><span>Period length</span><input type="number" name="periodLen" inputmode="numeric" min="1" max="12" value="${S.cycle.settings.periodLen}"></label></div>
+    <button class="btn block" type="submit">Save</button></form>
+    <div class="danger-zone"><button class="btn danger small" data-action="cycle-clear">Clear all cycle data</button></div>` };
+}
+
+/* ---------- pregnancy ---------- */
+const BABY = { // week: [comparison, emoji, length, weight]
+  4: ['a poppy seed', '🌱', '0.1 cm', '<1 g'], 5: ['a sesame seed', '🌾', '0.2 cm', '<1 g'], 6: ['a sweet pea', '🫛', '0.6 cm', '<1 g'], 7: ['a blueberry', '🫐', '1.3 cm', '<1 g'],
+  8: ['a kidney bean', '🫘', '1.6 cm', '1 g'], 9: ['a grape', '🍇', '2.3 cm', '2 g'], 10: ['a kumquat', '🍊', '3.1 cm', '4 g'], 11: ['a strawberry', '🍓', '4.1 cm', '7 g'],
+  12: ['a lime', '🍋', '5.4 cm', '14 g'], 13: ['a lemon', '🍋', '7.4 cm', '23 g'], 14: ['a peach', '🍑', '8.7 cm', '43 g'], 15: ['an apple', '🍎', '10.1 cm', '70 g'],
+  16: ['an avocado', '🥑', '11.6 cm', '100 g'], 17: ['a pear', '🍐', '13 cm', '140 g'], 18: ['a bell pepper', '🫑', '14.2 cm', '190 g'], 19: ['a mango', '🥭', '15.3 cm', '240 g'],
+  20: ['a banana', '🍌', '25.6 cm', '300 g'], 21: ['a carrot', '🥕', '26.7 cm', '360 g'], 22: ['a coconut', '🥥', '27.8 cm', '430 g'], 23: ['a grapefruit', '🍊', '28.9 cm', '500 g'],
+  24: ['an ear of corn', '🌽', '30 cm', '600 g'], 25: ['a head of broccoli', '🥦', '34.6 cm', '660 g'], 26: ['a head of lettuce', '🥬', '35.6 cm', '760 g'], 27: ['a cabbage', '🥬', '36.6 cm', '875 g'],
+  28: ['an eggplant', '🍆', '37.6 cm', '1 kg'], 29: ['a sweet potato bundle', '🍠', '38.6 cm', '1.15 kg'], 30: ['a cucumber bunch', '🥒', '39.9 cm', '1.3 kg'], 31: ['a pineapple', '🍍', '41.1 cm', '1.5 kg'],
+  32: ['a squash', '🎃', '42.4 cm', '1.7 kg'], 33: ['a bunch of celery', '🥬', '43.7 cm', '1.9 kg'], 34: ['a cantaloupe', '🍈', '45 cm', '2.1 kg'], 35: ['a honeydew melon', '🍈', '46.2 cm', '2.4 kg'],
+  36: ['a head of romaine', '🥬', '47.4 cm', '2.6 kg'], 37: ['a winter melon', '🍈', '48.6 cm', '2.9 kg'], 38: ['a pumpkin', '🎃', '49.8 cm', '3.1 kg'], 39: ['a mini watermelon', '🍉', '50.7 cm', '3.3 kg'], 40: ['a watermelon', '🍉', '51.2 cm', '3.4 kg'],
+};
+const WEEKS = {
+  4: ['The embryo is implanting in the uterine lining and the placenta is starting to form.', 'A missed period is often the first sign — a home test can now turn positive.', 'Start a prenatal vitamin with folic acid if you haven’t already.'],
+  5: ['The neural tube — the future brain and spinal cord — is forming, and the heart begins to develop.', 'Tiredness, tender breasts and peeing more often are common.', 'Call your provider to schedule your first prenatal visit.'],
+  6: ['A tiny heart is beating, and buds for arms and legs are appearing.', 'Morning sickness often starts around now — and can strike any time of day.', 'Small, frequent snacks like crackers or ginger can ease nausea.'],
+  7: ['The brain is growing fast, and hands and feet look like little paddles.', 'Food aversions, cravings and a stronger sense of smell are common.', 'Sip water through the day if big drinks are hard to keep down.'],
+  8: ['Fingers and toes are forming and the baby is starting to make tiny movements.', 'Your uterus is growing — mild cramping or bloating can happen.', 'Many people have their first ultrasound between weeks 8 and 12.'],
+  9: ['All the essential organs are in place, and earlobes and eyelids are forming.', 'Mood swings are common as hormones surge.', 'Rest when you can — first-trimester fatigue is real.'],
+  10: ['The embryo is now called a fetus. Bones and cartilage are forming.', 'Your waistline may start to thicken.', 'Ask your provider about optional genetic screening tests.'],
+  11: ['The baby can open and close its fists and may hiccup.', 'For some people, nausea starts to ease.', 'Gentle exercise like walking or prenatal yoga can lift your energy.'],
+  12: ['Reflexes are developing — fingers can curl, toes can flex — and the kidneys begin making urine.', 'The risk of miscarriage drops noticeably, and many people start sharing their news.', 'First-trimester screening often happens around now.'],
+  13: ['Vocal cords are forming and tiny fingerprints are appearing.', 'Last week of the first trimester — energy often starts to come back.', 'Comfortable, stretchy clothes (or your first maternity pieces) help now.'],
+  14: ['The baby can squint, frown and may suck its thumb.', 'Welcome to the second trimester — often the most comfortable stretch.', 'Moisturize your belly; stretching skin can itch.'],
+  15: ['Bones are hardening and the baby can sense light through closed eyelids.', 'Extra blood flow can cause a stuffy nose or nosebleeds.', 'A humidifier at night can help with congestion.'],
+  16: ['Facial muscles are working, and the eyes can make small movements.', 'Increased blood volume can give you that pregnancy “glow”.', 'Book a dental cleaning — gums can be more sensitive now.'],
+  17: ['Fat is starting to build up under the skin and the skeleton keeps hardening.', 'Your appetite may pick up as nausea fades.', 'Focus on protein, fiber and calcium-rich foods.'],
+  18: ['The ears are in position and the baby may start to hear sounds.', 'You may feel the first flutters of movement (between about 16 and 22 weeks).', 'Side-sleeping gets more comfortable as your bump grows — try a pillow between your knees.'],
+  19: ['A protective waxy coating called vernix is covering the skin.', 'Round ligament pain — sharp twinges low on your belly — is common.', 'Change positions slowly to avoid those twinges.'],
+  20: ['Halfway there! The baby is swallowing and practicing digestion.', 'The top of your uterus is around your belly button.', 'The anatomy scan usually happens between weeks 18 and 22.'],
+  21: ['Movements are getting stronger and more coordinated.', 'Swollen feet and ankles may start.', 'Put your feet up and keep moving to help circulation.'],
+  22: ['Eyebrows and eyelashes are visible, and the sense of touch is developing.', 'Stretch marks may appear on your belly, hips or breasts.', 'Start looking into childbirth classes.'],
+  23: ['The baby can hear your voice and heartbeat clearly.', 'You may notice Braxton Hicks — irregular “practice” tightening.', 'Talk, read or sing to your baby — they’re listening.'],
+  24: ['The lungs are developing branches and the cells that make surfactant.', 'Your glucose screening test is usually between weeks 24 and 28.', 'Learn the signs of preterm labor and when to call your provider.'],
+  25: ['The baby is filling out and hair may be growing.', 'Heartburn and trouble sleeping may increase.', 'Smaller meals and staying upright after eating can ease heartburn.'],
+  26: ['The eyes begin to open, and the baby may move in response to sound.', 'Back pain is common as your center of gravity shifts.', 'Supportive shoes and a pregnancy pillow can help a lot.'],
+  27: ['The brain is very active and sleep–wake cycles are forming.', 'Last week of the second trimester!', 'Start thinking about your birth preferences.'],
+  28: ['The baby can blink and may even have REM (dreaming) sleep.', 'The third trimester begins — appointments usually get more frequent.', 'Many providers suggest daily kick counts from now on — ask yours.'],
+  29: ['Muscles and lungs are maturing, and the head is growing to make room for the brain.', 'You may feel short of breath as your uterus presses upward.', 'Sort out parental leave plans and paperwork.'],
+  30: ['From here the baby gains roughly half a pound (about 225 g) a week.', 'Fatigue can return, along with trouble getting comfy at night.', 'Start a list for your hospital bag.'],
+  31: ['All five senses are working.', 'Your breasts may leak a little colostrum.', 'Tour your birth location, in person or virtually.'],
+  32: ['Toenails and fingernails have grown, and the baby is practicing breathing.', 'Braxton Hicks may come more often.', 'Install the car seat and get it checked.'],
+  33: ['Bones are hardening — except the skull, which stays soft for birth.', 'Swelling, aches and frequent bathroom trips are common.', 'Call your provider about sudden swelling of your face or hands.'],
+  34: ['The central nervous system and lungs keep maturing.', 'Your vision may be slightly blurry — usually temporary.', 'Cook and freeze a few easy meals for after the birth.'],
+  35: ['Most basic development is done — now it’s mainly about growing.', 'Space is getting tight; movements may feel more like rolls than kicks.', 'The Group B strep test usually happens around weeks 36–37.'],
+  36: ['The baby is shedding its fine body hair (lanugo) and adding fat.', 'The baby may “drop” lower — breathing gets easier, bathroom trips more frequent.', 'Finish packing your hospital bag.'],
+  37: ['Early term — the baby is practicing breathing, sucking and grasping.', 'Watch for labor signs: regular contractions, your water breaking or a bloody show.', 'Know your route to the hospital or birth center.'],
+  38: ['The organs are ready for life outside, and the baby has a firm grip.', 'Nesting urges are common.', 'Rest up — and time contractions if they start.'],
+  39: ['Full term! The baby keeps adding fat to stay warm after birth.', 'Your cervix may be softening and starting to open.', 'Call your provider if you notice less movement than usual.'],
+  40: ['Your baby is ready to meet you.', 'Only about 1 in 20 babies arrive on their due date — it really could be any day.', 'Ask your provider about the plan if you go past your due date.'],
+};
+let pregWeekView = null;
+function pregNow() {
+  const p = S.cycle.preg; if (!p || !p.lmp) return null;
+  const days = Math.max(0, diffDays(p.lmp, todayYMD())), w = Math.floor(days / 7), d = days % 7;
+  const due = addDays(p.lmp, 280);
+  return { days, w, d, due, left: diffDays(todayYMD(), due), tri: w < 14 ? 1 : w < 28 ? 2 : 3 };
+}
+function viewPreg() {
+  const n = pregNow(); const p = S.cycle.preg;
+  const wk = Math.min(42, Math.max(1, pregWeekView || Math.max(1, n.w)));
+  const key = Math.min(40, Math.max(4, wk)); const b = BABY[key]; const info = WEEKS[key];
+  const browsing = pregWeekView && pregWeekView !== Math.max(1, n.w);
+  const triName = ['', '1st', '2nd', '3rd'][wk < 14 ? 1 : wk < 28 ? 2 : 3];
+  const bumps = Object.entries(p.bumps || {}).sort((a, c) => +a[0] - +c[0]);
+  const pct = Math.min(100, n.days / 280 * 100);
+  return `${brandbar()}<div class="page-head"><h1><em>Bloom</em></h1><button class="icon-btn" data-action="preg-setup" aria-label="Pregnancy settings">${ic('edit')}</button></div>${modeSwitch()}
+  <div class="preg-hero">
+    <div class="ph-top"><div><div class="ph-k">${browsing ? 'Viewing' : 'You are'}</div><div class="ph-w">${browsing ? `Week ${wk}` : `${n.w} weeks${n.d ? `, ${plural(n.d, ['day','days'])}` : ''}`}</div><div class="ph-t">${triName} trimester</div></div>
+      <div class="ph-nav"><button data-action="preg-week" data-n="-1" aria-label="Previous week">${ic('back')}</button><button data-action="preg-week" data-n="1" aria-label="Next week">${ic('chev')}</button></div></div>
+    ${wk < 4 ? `<div class="baby"><div class="baby-orb">✨</div><div class="baby-t">Getting started</div><div class="sub">Pregnancy is counted from the first day of your last period, so conception usually happens around week 2. Baby sizes start at week 4.</div></div>` :
+    `<div class="baby"><div class="baby-orb"><span>${b[1]}</span></div><div class="baby-k">Your baby is about the size of</div><div class="baby-t">${esc(b[0])}</div>
+      <div class="baby-m"><span><b>${b[2]}</b>length</span><span><b>${b[3]}</b>weight</span></div></div>`}
+    ${browsing ? `<button class="link-btn" style="display:block;margin:6px auto 0" data-action="preg-week" data-n="0">Back to this week</button>` : ''}
+  </div>
+  <div class="panel"><div class="panel-h"><b>${n.left > 0 ? `${plural(n.left, ['day','days'])} to go` : n.left === 0 ? 'Due today!' : `${plural(-n.left, ['day','days'])} past due`}</b><span class="sub">Due ${fmtYMD(n.due)}</span></div>
+    <div class="tri-bar"><i style="width:${pct}%"></i><span style="left:${13 / 40 * 100}%"></span><span style="left:${27 / 40 * 100}%"></span></div>
+    <div class="tri-labels"><span>1st</span><span>2nd</span><span>3rd</span></div></div>
+  ${wk >= 4 ? `<div class="info-card"><div class="ic-h">👶 Baby this week</div><p>${esc(info[0])}</p></div>
+  <div class="info-card"><div class="ic-h">💗 Your body</div><p>${esc(info[1])}</p></div>
+  <div class="info-card"><div class="ic-h">✅ Tip for week ${wk}</div><p>${esc(info[2])}</p></div>` : ''}
+  <h3>Bump diary</h3>
+  <div class="panel"><div class="row" style="gap:14px"><div class="bump-main">${(p.bumps || {})[wk] ? `<img src="${(p.bumps || {})[wk]}" alt="">` : `<span>${ic('cam')}</span>`}</div>
+    <div><b>Week ${wk}</b><div class="sub" style="margin:4px 0 10px">${(p.bumps || {})[wk] ? 'Your bump this week' : 'Snap a photo to watch your bump grow week by week.'}</div><button class="btn soft small" data-action="bump-photo" data-w="${wk}">${ic('cam')} ${(p.bumps || {})[wk] ? 'Replace photo' : 'Add photo'}</button>${(p.bumps || {})[wk] ? ` <button class="link-btn" style="margin-left:8px" data-action="bump-del" data-w="${wk}">Remove</button>` : ''}</div></div>
+    ${bumps.length ? `<div class="bump-strip">${bumps.map(([w, src]) => `<button data-action="preg-goto" data-w="${w}"><img src="${src}" alt=""><span>Wk ${w}</span></button>`).join('')}</div>` : ''}</div>
+  <p class="sub disclaimer">General information only — every pregnancy is different. Always follow your doctor or midwife's advice.</p>`;
+}
+function pregSetupSheet() {
+  const p = S.cycle.preg || {}; const st = cycleStats(); const last = st.runs.filter(r => r.start <= todayYMD()).at(-1);
+  const due = p.lmp ? addDays(p.lmp, 280) : '';
+  return { head: `<div class="row"><h2>${p.lmp ? 'Pregnancy settings' : 'Pregnancy mode'}</h2><button class="close" data-action="close-sheet" aria-label="Close">${ic('x')}</button></div>`,
+  body: `<form data-form="preg-setup">${!p.lmp ? `<p class="sub" style="margin-top:0">Bloom will switch to week-by-week pregnancy tracking. Your cycle data is kept safe — switch back any time.</p>` : ''}
+    <label class="field"><span>Due date</span><input type="date" name="due" id="pregDue" value="${esc(due)}"></label>
+    <div class="sub" style="text-align:center;margin:-2px 0 10px">— or —</div>
+    <label class="field"><span>First day of your last period</span><input type="date" name="lmp" id="pregLmp" max="${todayYMD()}" value="${esc(p.lmp || (last ? last.start : ''))}"></label>
+    <div class="sub" style="margin:-4px 0 14px">Fill in either one — the other is worked out for you.</div>
+    <button class="btn block" type="submit">${p.lmp ? 'Save' : 'Turn on pregnancy mode'}</button></form>
+    ${p.lmp ? `<button class="btn ghost block" style="margin-top:10px" data-action="bloom-mode" data-m="cycle">Switch to cycle tracking</button>
+      <div class="danger-zone"><button class="btn danger small" data-action="preg-end">End pregnancy tracking & delete pregnancy data</button></div>` : ''}` };
+}
+
 /* ---------------- main render ---------------- */
 function render() {
   document.body.dataset.tab = tab;
   const v = top_();
   let html = '';
-  if (tab === 'chores') {
+  document.body.dataset.mode = S.cycle && S.cycle.mode === 'preg' && S.cycle.preg ? 'preg' : 'cycle';
+  if (tab === 'bloom') {
+    if (v.v === 'home') html = S.cycle.mode === 'preg' && pregNow() ? viewPreg() : viewCycle();
+    else if (v.v === 'cycles') html = viewCycles();
+  } else if (tab === 'chores') {
     if (v.v === 'home') html = viewChoresHome();
     else if (v.v === 'room') { const r = findRoom(v.id); html = r ? viewRoom(r) : notFound(); }
   } else if (tab === 'recipes') {
@@ -960,7 +1316,7 @@ function render() {
 const rerender = () => render();
 function notFound() { return `<div class="topbar"><button class="back" data-action="back">${ic('back')} Back</button></div><div class="empty">This item was removed.</div>`; }
 function renderTabs() {
-  const T = [['books','Books','book'],['movies','Movies','film'],['shows','TV','tv'],['recipes','Recipes','bowl'],['chores','Chores','home']];
+  const T = [['books','Books','book'],['movies','Movies','film'],['shows','TV','tv'],['recipes','Recipes','bowl'],['chores','Chores','home'],['bloom','Bloom','flower']];
   $('#tabs').innerHTML = T.map(([k, l, i]) => `<button class="tab ${tab === k ? 'on' : ''}" data-action="tab" data-tab="${k}"><span class="pill">${ic(i)}</span>${l}</button>`).join('');
 }
 
@@ -1005,11 +1361,13 @@ function renderSheet() {
       <label class="field"><span>Steps — one per line (start a line with # for a heading)</span><textarea name="instructions" rows="8">${esc((d.instructions || []).join('\n'))}</textarea></label>
       <label class="field"><span>Source link</span><input name="url" type="url" value="${esc(d.url || '')}"></label>
       <button class="btn block" type="submit">Save recipe</button></form>`;
+  } else if (sheet.type === 'cday' || sheet.type === 'cycle-settings' || sheet.type === 'preg-setup') {
+    ({ head, body } = sheet.type === 'cday' ? cdaySheet() : sheet.type === 'cycle-settings' ? cycleSettingsSheet() : pregSetupSheet());
   } else if (sheet.type === 'chore' || sheet.type === 'room') {
     ({ head, body } = sheet.type === 'chore' ? choreSheetHTML() : roomSheetHTML());
   } else if (sheet.type === 'settings') {
     head = `<div class="row"><h2>Settings</h2>${closeBtn}</div>`;
-    const counts = [plural(S.books.length, KINDS.books.noun), plural(S.movies.length, KINDS.movies.noun), plural(S.shows.length, KINDS.shows.noun), plural(S.recipes.length, ['recipe','recipes']), plural(S.rooms.length, ['room','rooms'])].join(' · ');
+    const counts = [plural(S.books.length, KINDS.books.noun), plural(S.movies.length, KINDS.movies.noun), plural(S.shows.length, KINDS.shows.noun), plural(S.recipes.length, ['recipe','recipes']), plural(S.rooms.length, ['room','rooms'])].join(' · ') + (S.cycle.periodDays.length ? ' · cycle data' : '');
     body = `<p class="sub" style="margin-top:0">Everything is saved privately on this device. ${counts}.</p>
       <div class="panel"><div class="panel-h"><b>Background color</b>${S.prefs.bg && S.prefs.bg !== THEMES[0][1] ? `<button class="link-btn" data-action="bg" data-c="${THEMES[0][1]}">Reset</button>` : ''}</div>
         <div class="swatches">${THEMES.map(([n, c]) => { const on = (S.prefs.bg || THEMES[0][1]).toLowerCase() === c.toLowerCase(); return `<div><button class="sw ${on ? 'on' : ''}" style="--s:${c}; --k:${isDark(c) ? '#fff' : '#1E1A16'}" data-action="bg" data-c="${c}" aria-label="${n}">${on ? ic('check') : ''}</button><div class="sw-label">${n}</div></div>`; }).join('')}</div>
@@ -1289,6 +1647,26 @@ const A = {
   'steps-reset': el => { stepsDone[el.dataset.id] = new Set(); render(); },
   // settings
   'settings': () => openSheet({ type: 'settings' }),
+  // bloom
+  'bloom-mode': el => { const m = el.dataset.m; if (m === 'preg' && !(S.cycle.preg && S.cycle.preg.lmp)) { openSheet({ type: 'preg-setup' }); return; } S.cycle.mode = m; save(); if (sheet) closeSheet(); render(); },
+  'cycle-settings': () => openSheet({ type: 'cycle-settings' }),
+  'cycle-clear': () => { if (!confirm('Delete all period days, logs and cycle history?')) return; const keep = S.cycle.preg; S.cycle = DEF_CYCLE(); S.cycle.preg = keep; save(); closeSheet(); render(); },
+  'cday': el => openSheet({ type: 'cday', d: el.dataset.d }),
+  'cday-period': () => { const d = sheet.d, set = new Set(S.cycle.periodDays); set.has(d) ? set.delete(d) : set.add(d); S.cycle.periodDays = [...set].sort(); save(); renderSheet(); render(); },
+  'clog': el => { const d = sheet.d, k = el.dataset.k, v = el.dataset.v; const lg = S.cycle.logs[d] = S.cycle.logs[d] || {};
+    if (k === 'flow') lg.flow = lg.flow === v ? '' : v; else { const a = new Set(lg[k] || []); a.has(v) ? a.delete(v) : a.add(v); lg[k] = [...a]; }
+    save(); const y = $('#sheetBody').scrollTop; renderSheet(); $('#sheetBody').scrollTop = y; render(); },
+  'cal-nav': el => { const [y, m] = calMonth.split('-').map(Number); const d = new Date(y, m - 1 + +el.dataset.n, 1); calMonth = ymd(d).slice(0, 7); render(); },
+  'period-log': () => { const st = cycleStats(), t = todayYMD(); const set = new Set(S.cycle.periodDays); for (let i = 0; i < st.avgPeriod; i++) set.add(addDays(t, i)); S.cycle.periodDays = [...set].sort(); save(); render(); toast('Period logged — tap calendar days to adjust'); },
+  'period-end': () => { const st = cycleStats(), now = cycleNow(st), t = todayYMD(); S.cycle.periodDays = S.cycle.periodDays.filter(d => !(d > t && d >= now.cur.start && d <= now.cur.end)); save(); render(); toast('Period ended today'); },
+  'period-extend': () => { S.cycle.periodDays = [...new Set([...S.cycle.periodDays, addDays(todayYMD(), 1)])].sort(); save(); render(); toast('Added tomorrow as a period day'); },
+  'open-cycles': () => pushView({ v: 'cycles' }),
+  'preg-setup': () => openSheet({ type: 'preg-setup' }),
+  'preg-week': el => { const n = pregNow(); const cur = Math.max(1, n.w); const v = +el.dataset.n === 0 ? null : Math.min(42, Math.max(1, (pregWeekView || cur) + +el.dataset.n)); pregWeekView = v === cur ? null : v; render(); },
+  'preg-goto': el => { pregWeekView = +el.dataset.w; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); },
+  'bump-photo': async el => { const w = el.dataset.w; const d = await pickPhoto(); if (!d) return; S.cycle.preg.bumps = S.cycle.preg.bumps || {}; S.cycle.preg.bumps[w] = d; save(); render(); toast('Bump photo saved'); },
+  'bump-del': el => { delete S.cycle.preg.bumps[el.dataset.w]; save(); render(); },
+  'preg-end': () => { if (!confirm('End pregnancy tracking and delete your due date and bump photos?')) return; S.cycle.preg = null; S.cycle.mode = 'cycle'; pregWeekView = null; save(); closeSheet(); render(); },
   // chores
   'open-room': el => pushView({ v: 'room', id: el.dataset.id }),
   'room-new': () => openSheet({ type: 'room', id: null, draft: { name: '', emoji: '🏠' } }),
@@ -1306,7 +1684,7 @@ const A = {
   'bg': el => { setBg(el.dataset.c); const y = $('#sheetBody').scrollTop; renderSheet(); $('#sheetBody').scrollTop = y; },
   'export': () => { const blob = new Blob([JSON.stringify(S)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `ultimate-tracker-backup-${new Date().toISOString().slice(0, 10)}.json`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); },
   'import': () => { const inp = $('#jsonPick'); inp.value = ''; inp.onchange = async () => { try { const d = JSON.parse(await inp.files[0].text()); if (!d || !Array.isArray(d.books)) throw 0; if (!confirm('Replace everything on this device with this backup?')) return; S = Object.assign(DEFAULT(), d); save(); closeSheet(); render(); toast('Backup restored'); } catch { toast("That doesn't look like a tracker backup"); } }; inp.click(); },
-  'reset': () => { if (confirm('Erase all books, movies, shows, recipes, chores and your cart? This cannot be undone.')) { S = DEFAULT(); save(); closeSheet(); Object.keys(stacks).forEach(k => stacks[k] = [{v:'home'}]); render(); } },
+  'reset': () => { if (confirm('Erase all books, movies, shows, recipes, chores, cycle data and your cart? This cannot be undone.')) { S = DEFAULT(); save(); closeSheet(); Object.keys(stacks).forEach(k => stacks[k] = [{v:'home'}]); render(); } },
 };
 function syncDraftFromForm() {
   const f = $('#sheetBody form'); if (!f || !sheet || !sheet.draft) return;
@@ -1321,6 +1699,14 @@ document.addEventListener('click', e => {
 
 /* ---------------- forms & inputs ---------------- */
 function syncChoreDraft() { const d = sheet.draft; d.name = $('#choreName').value; d.lastDone = $('#choreLast').value; d.nextDue = $('#choreNext').value; const sel = $('#sheetBody select[name=roomId]'); if (sel) d.roomId = sel.value; }
+const FORMS_BLOOM = {
+  'cycle-start': f => { const fd = Object.fromEntries(new FormData(f)); S.cycle.settings = { cycleLen: Math.min(60, Math.max(15, +fd.cycleLen || 28)), periodLen: Math.min(12, Math.max(1, +fd.periodLen || 5)) };
+    const set = new Set(S.cycle.periodDays); for (let i = 0; i < S.cycle.settings.periodLen; i++) set.add(addDays(fd.start, i)); S.cycle.periodDays = [...set].sort(); save(); render(); toast('Cycle tracking is on 🌸'); },
+  'cycle-settings': f => { const fd = Object.fromEntries(new FormData(f)); S.cycle.settings = { cycleLen: Math.min(60, Math.max(15, +fd.cycleLen || 28)), periodLen: Math.min(12, Math.max(1, +fd.periodLen || 5)) }; save(); closeSheet(); render(); },
+  'preg-setup': f => { const fd = Object.fromEntries(new FormData(f)); const lmp = fd.lmp || (fd.due ? addDays(fd.due, -280) : '');
+    if (!lmp) { toast('Add your due date or last period'); return; }
+    S.cycle.preg = Object.assign(S.cycle.preg || { bumps: {}, startedAt: now() }, { lmp }); S.cycle.mode = 'preg'; pregWeekView = null; save(); closeSheet(); render(); toast('Pregnancy mode on 💜'); },
+};
 const FORMS = {
   room: f => { const name = $('#roomName').value.trim(); if (!name) { toast('Give the room a name or tap a quick add'); return; }
     if (sheet.id) { const r = findRoom(sheet.id); r.name = name; r.emoji = sheet.draft.emoji; save(); closeSheet(); render(); }
@@ -1367,12 +1753,15 @@ const FORMS = {
   },
   'cart-add': () => { const v = $('#cartNew').value.trim(); if (!v) return; S.cart.push({ id: uid(), text: v, recipeId: null, recipeTitle: '', checked: false }); save(); render(); setTimeout(() => $('#cartNew')?.focus(), 30); },
 };
-document.addEventListener('submit', e => { const f = e.target.closest('[data-form]'); if (!f) return; e.preventDefault(); FORMS[f.dataset.form]?.(f); });
+document.addEventListener('submit', e => { const f = e.target.closest('[data-form]'); if (!f) return; e.preventDefault(); (FORMS[f.dataset.form] || FORMS_BLOOM[f.dataset.form])?.(f); });
 const liveSearch = debounce(v => runSearch(v), 400);
 document.addEventListener('input', e => {
   const el = e.target;
   if (el.id === 'searchQ') liveSearch(el.value);
   if (el.id === 'bgCustom') { applyTheme(el.value); }
+  if (el.id === 'cNote' && sheet && sheet.d) { const lg = S.cycle.logs[sheet.d] = S.cycle.logs[sheet.d] || {}; lg.note = el.value; save(); }
+  if (el.id === 'pregDue' && el.value) { $('#pregLmp').value = addDays(el.value, -280); }
+  if (el.id === 'pregLmp' && el.value) { $('#pregDue').value = addDays(el.value, 280); }
   if (el.id === 'choreLast' && sheet && sheet.draft) { sheet.draft.lastDone = el.value; if (el.value) { sheet.draft.nextDue = addFreq(el.value, sheet.draft.freq); $('#choreNext').value = sheet.draft.nextDue; } }
   if (el.id === 'choreNext' && sheet && sheet.draft) { sheet.draft.nextDue = el.value; sheet.draft.nextEdited = true; }
   if (el.dataset.bind && el.tagName === 'TEXTAREA') applyBind(el, false);
@@ -1392,7 +1781,7 @@ function applyBind(el, rerenderAfter) {
 (async function boot() {
   await Store.open();
   const saved = await Store.get('state');
-  if (saved) S = Object.assign(DEFAULT(), saved, { goal: Object.assign(DEFAULT().goal, saved.goal), prefs: Object.assign(DEFAULT().prefs, saved.prefs) });
+  if (saved) S = Object.assign(DEFAULT(), saved, { goal: Object.assign(DEFAULT().goal, saved.goal), prefs: Object.assign(DEFAULT().prefs, saved.prefs), cycle: Object.assign(DEF_CYCLE(), saved.cycle, { settings: Object.assign(DEF_CYCLE().settings, saved.cycle && saved.cycle.settings) }) });
   applyTheme(S.prefs.bg);
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
   if (!stacks[tab]) tab = 'books';

@@ -1,6 +1,6 @@
 # The Ultimate Tracker
 
-One app for everything you read, watch, cook and clean: **books, movies, TV shows, recipes and home chores**.
+One app for everything you read, watch, cook, clean and feel: **books, movies, TV shows, recipes, home chores, and cycle & pregnancy tracking**.
 
 **Open it:** https://annabxclu.github.io/The-Ultimate-Tracker/
 
@@ -46,6 +46,23 @@ On your phone, add it to your home screen so it opens like a regular app:
 - Each chore shows the **date it was last done** and the **date it's next due**; next due is worked out automatically and you can change it
 - **Checkbox** to mark a chore done: it logs today and schedules the next date (tap again to undo)
 - Home screen shows what's **overdue**, **due today** and **coming up this week** across every room
+
+### 🌸 Bloom: cycle & pregnancy
+**Cycle mode**
+- Cycle ring showing **which day and phase you're in** (period, follicular, ovulation window, luteal) and what's happening in your body, with tips for that phase
+- **Predictions**: next period, fertile window and ovulation date, which get better the more you log
+- Week strip and monthly **calendar** with logged and predicted periods, fertile days and ovulation
+- Daily log of flow, symptoms, mood and notes
+- **Cycle history**: every cycle's length and period length, plus your average cycle, average period and how regular you are
+
+**Pregnancy mode** (toggle at the top of the tab; your cycle data is kept)
+- Different look: soft lavender instead of rose
+- How far along you are (e.g. "12 weeks, 3 days"), your trimester, a countdown and due date
+- **Baby size each week** (e.g. a lime at week 12) with approximate length and weight
+- What's happening with the baby, your body, and a tip for every week from 4 to 40; tap the arrows to browse any week
+- **Bump diary**: add a photo each week and watch your bump grow
+
+*Predictions and pregnancy info are general estimates. They aren't birth control or medical advice.*
 
 ## Make it yours
 **Settings → Background color**: choose from 15 preset shades (light pastels through dark slate, forest, plum and night) or pick any custom color. Text, cards and accents adjust automatically so dark backgrounds stay readable, and your choice is remembered.
