@@ -1,0 +1,47 @@
+# The Ultimate Tracker
+
+One app for everything you read, watch and cook: **books, movies, TV shows and recipes**.
+
+**Open it:** https://annabxclu.github.io/The-Ultimate-Tracker/
+
+On your phone, add it to your home screen so it opens like a regular app:
+- **iPhone (Safari):** Share → *Add to Home Screen*
+- **Android (Chrome):** ⋮ → *Install app*
+
+## Features
+
+### 📚 Books
+- Search millions of books (title, author or ISBN) via Open Library, or add one by hand
+- Shelves: **Currently Reading**, **To Be Read** and **Finished**, each with a fanned cover preview, the book count and an arrow to open the full list
+- Page-by-page progress with quick +10 / +25 buttons
+- Yearly **reading goal** with a progress ring and an ahead/behind-schedule indicator
+- **Milestones**: first book, 5 / 10 / 25 / 50 / 100 books, and 1k–50k pages read
+- Ratings, notes, start/finish dates, and your own cover photo when one is missing
+
+### 🎬 Movies
+- Search movies (Apple's iTunes catalog) or add by hand
+- Lists: **In Progress** (with "where you left off"), **Movie List** and **Finished**
+- Ratings, notes, add or replace the poster with your own photo
+
+### 📺 TV shows
+- Search shows (TVMaze) and the full episode list is loaded automatically
+- Lists: **In Progress**, **Show List** and **Finished**
+- Check off **episode by episode** or a **whole season** at once
+- "Up next" card to tick off the next episode in one tap
+- Shows move to In Progress / Finished automatically as you check episodes
+- Refresh to pull in newly announced episodes; manual shows can have seasons and episodes added by hand
+
+### 🍝 Recipes
+- **Paste a recipe link** and the app keeps only the title, photo, ingredients and steps (no life story)
+- If a recipe has no photo, add your own
+- Tap the cart next to any ingredient, or **Add all to cart**
+- Shopping cart grouped by recipe, check items off, add extras, share the list, and jump to **Instacart, Walmart, Amazon Fresh, Target or Kroger** to buy each item
+- Tap a step to mark it done while you cook
+- On Android, share a recipe page straight into the installed app
+
+## Your data
+Everything is stored **privately on your device** (no account, no server). Use **Settings → Export** to back up or move to a new phone, and **Import backup** to restore.
+
+## Notes
+- Recipe import works on most recipe sites (anything that publishes standard recipe data). It reads the page through public relay services because browsers block apps from reading other sites directly. If a site refuses, tap **Add it manually** and the form is prefilled with what was found.
+- Built as a single HTML file with no build step. Hosted on GitHub Pages.
