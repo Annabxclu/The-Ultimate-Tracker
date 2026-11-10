@@ -44,7 +44,7 @@ body[data-tab="bloom"]  {--accent:#C2456B; --accent-soft:#F9DDE5}
 body[data-tab="bloom"][data-mode="preg"] {--accent:#7656A8; --accent-soft:#ECE4F6}
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
 html{background:var(--paper)}
-body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.4;
+body{margin:0; min-height:100vh; min-height:100dvh; background-attachment:fixed; background:var(--paper); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.4;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.33 0 0 0 0 0.25 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   transition: background-color .3s}
 button{font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer}
@@ -310,7 +310,7 @@ details.more summary::-webkit-details-marker{display:none}
 .fq{background:var(--accent-soft); color:var(--accent-fg); font-weight:700; padding:2px 8px; border-radius:8px; font-size:11.5px}
 .due.late, .late{color:#C0412F; font-weight:700} .due.today{color:var(--accent-fg); font-weight:700}
 html.dark .due.late, html.dark .late{color:#F08A78}
-.cd{font-size:12px; color:var(--faint); margin-top:4px}
+.chore-dates{font-size:12px; color:var(--faint); margin-top:4px}
 .caught{text-align:center; color:var(--muted); padding:20px}
 .room{display:grid; grid-template-columns:52px 1fr 34px; gap:14px; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:14px; width:100%; text-align:left}
 .re{width:52px; height:52px; border-radius:16px; background:var(--accent-soft); display:grid; place-items:center; font-size:26px}
@@ -949,7 +949,7 @@ function choreRow(c, r, showRoom) {
     <button class="chore-main" data-action="chore-edit" data-id="${c.id}">
       <div class="cn">${esc(c.name)}</div>
       <div class="cm"><span class="fq">${esc(freqLabel(c.freq))}</span>${showRoom ? `<span>${esc(r.emoji)} ${esc(r.name)}</span>` : ''}<span class="due ${done ? '' : rel.cls}">${done ? 'Done ✓ · next ' + fmtYMD(c.nextDue) : rel.t}</span></div>
-      ${!showRoom ? `<div class="cd">Last done ${c.lastDone ? fmtYMD(c.lastDone) : 'never'} · Next ${fmtYMD(c.nextDue)}</div>` : ''}
+      ${!showRoom ? `<div class="chore-dates">Last done ${c.lastDone ? fmtYMD(c.lastDone) : 'never'} · Next ${fmtYMD(c.nextDue)}</div>` : ''}
     </button></div>`;
 }
 function viewChoresHome() {
