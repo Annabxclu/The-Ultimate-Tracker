@@ -1,6 +1,6 @@
 # The Ultimate Tracker
 
-One app for everything you read, watch and cook: **books, movies, TV shows and recipes**.
+One app for everything you read, watch, cook and clean: **books, movies, TV shows, recipes and home chores**.
 
 **Open it:** https://annabxclu.github.io/The-Ultimate-Tracker/
 
@@ -38,6 +38,14 @@ On your phone, add it to your home screen so it opens like a regular app:
 - Shopping cart grouped by recipe, check items off, add extras, share the list, and jump to **Instacart, Walmart, Amazon Fresh, Target or Kroger** to buy each item
 - Tap a step to mark it done while you cook
 - On Android, share a recipe page straight into the installed app
+
+### 🧹 Chores
+- Add the **rooms** in your home (one-tap presets like Kitchen, Bathroom, Bedroom, Yard, or make your own with an icon)
+- Add **chores to each room**, with suggestions tailored to the room
+- Set how often: **daily, weekly, monthly, quarterly or annually**
+- Each chore shows the **date it was last done** and the **date it's next due**; next due is worked out automatically and you can change it
+- **Checkbox** to mark a chore done: it logs today and schedules the next date (tap again to undo)
+- Home screen shows what's **overdue**, **due today** and **coming up this week** across every room
 
 ## Make it yours
 **Settings → Background color**: choose from 15 preset shades (light pastels through dark slate, forest, plum and night) or pick any custom color. Text, cards and accents adjust automatically so dark backgrounds stay readable, and your choice is remembered.
