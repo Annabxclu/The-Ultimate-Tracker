@@ -39,6 +39,9 @@ On your phone, add it to your home screen so it opens like a regular app:
 - Tap a step to mark it done while you cook
 - On Android, share a recipe page straight into the installed app
 
+## Make it yours
+**Settings → Background color**: choose from 15 preset shades (light pastels through dark slate, forest, plum and night) or pick any custom color. Text, cards and accents adjust automatically so dark backgrounds stay readable, and your choice is remembered.
+
 ## Your data
 Everything is stored **privately on your device** (no account, no server). Use **Settings → Export** to back up or move to a new phone, and **Import backup** to restore.
 
