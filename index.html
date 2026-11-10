@@ -405,6 +405,21 @@ html.dark .cd.fertile{background:#1F3F3A; color:#8FD3C8}
 .bump-strip{display:flex; gap:8px; overflow-x:auto; margin-top:14px; padding-bottom:4px}
 .bump-strip button{flex:none; width:64px; text-align:center; font-size:11px; font-weight:600; color:var(--muted)}
 .bump-strip img{width:64px; height:84px; object-fit:cover; border-radius:10px; margin-bottom:4px}
+.tab{-webkit-user-select:none; user-select:none; -webkit-touch-callout:none; transition:transform .15s}
+#tabs{touch-action:pan-y}
+#tabs.sorting{touch-action:none}
+.tab.dragging, .tab-row.dragging{transition:none; z-index:5; position:relative}
+.tab.dragging .pill{background:var(--accent); color:#fff; box-shadow:0 8px 20px -6px rgba(0,0,0,.35)}
+.tab-row{display:grid; grid-template-columns:28px 34px 1fr auto; gap:10px; align-items:center; padding:10px 0; border-bottom:1px solid var(--line); background:var(--card)}
+.tab-row:last-child{border-bottom:0}
+.tab-row.dragging{box-shadow:0 10px 24px -10px rgba(0,0,0,.35); border-radius:12px}
+.handle{font-size:22px; color:var(--faint); text-align:center; cursor:grab; touch-action:none; -webkit-user-select:none; user-select:none; line-height:1; padding:6px 0}
+.tr-ic{width:34px; height:34px; border-radius:10px; background:var(--well); display:grid; place-items:center}
+.tr-ic .ic{width:18px; height:18px}
+.tr-t b{display:block; font-size:15px} .tr-t small{display:block; font-size:12px; color:var(--muted)}
+.switch{width:48px; height:28px; border-radius:14px; background:var(--line); position:relative; transition:background .2s; flex:none}
+.switch::after{content:""; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.25); transition:left .2s}
+.switch.on{background:var(--accent)} .switch.on::after{left:23px}
 .page-input{width:84px; text-align:center; font-family:var(--display); font-size:22px; font-weight:600; padding:8px; border-radius:12px; border:1px solid var(--line); background:var(--paper)}
 </style>
 </head>
@@ -506,7 +521,7 @@ const Store = {
   }
 };
 const DEF_CYCLE = () => ({ periodDays: [], logs: {}, settings: { cycleLen: 28, periodLen: 5 }, mode: 'cycle', preg: null });
-const DEFAULT = () => ({ v: 1, books: [], movies: [], shows: [], recipes: [], cart: [], rooms: [], cycle: DEF_CYCLE(), goal: { year: thisYear(), target: 0 }, prefs: { store: 'instacart' } });
+const DEFAULT = () => ({ v: 1, books: [], movies: [], shows: [], recipes: [], cart: [], rooms: [], cycle: DEF_CYCLE(), goal: { year: thisYear(), target: 0 }, prefs: { store: 'instacart', tabOrder: ['books','movies','shows','recipes','chores','bloom'], hidden: ['bloom'] } });
 let S = DEFAULT();
 const save = debounce(() => Store.set('state', JSON.parse(JSON.stringify(S))), 200);
 
@@ -1315,9 +1330,55 @@ function render() {
 }
 const rerender = () => render();
 function notFound() { return `<div class="topbar"><button class="back" data-action="back">${ic('back')} Back</button></div><div class="empty">This item was removed.</div>`; }
+const TABS = { books: ['Books', 'book', 'Shelves, reading goal & milestones'], movies: ['Movies', 'film', 'Movie list & what you\'ve watched'], shows: ['TV', 'tv', 'Shows & episode tracking'],
+  recipes: ['Recipes', 'bowl', 'Recipe imports & shopping cart'], chores: ['Chores', 'home', 'Rooms & recurring chores'], bloom: ['Bloom', 'flower', 'Cycle & pregnancy tracking'] };
+function tabOrder() { const o = (S.prefs.tabOrder || []).filter(k => TABS[k]); Object.keys(TABS).forEach(k => { if (!o.includes(k)) o.push(k); }); return o; }
+const visibleTabs = () => tabOrder().filter(k => !(S.prefs.hidden || []).includes(k));
 function renderTabs() {
-  const T = [['books','Books','book'],['movies','Movies','film'],['shows','TV','tv'],['recipes','Recipes','bowl'],['chores','Chores','home'],['bloom','Bloom','flower']];
-  $('#tabs').innerHTML = T.map(([k, l, i]) => `<button class="tab ${tab === k ? 'on' : ''}" data-action="tab" data-tab="${k}"><span class="pill">${ic(i)}</span>${l}</button>`).join('');
+  const v = visibleTabs(); const nav = $('#tabs');
+  nav.style.gridTemplateColumns = `repeat(${v.length}, 1fr)`;
+  nav.innerHTML = v.map(k => `<button class="tab ${tab === k ? 'on' : ''}" data-action="tab" data-tab="${k}" data-sort="${k}"><span class="pill">${ic(TABS[k][1])}</span>${TABS[k][0]}</button>`).join('');
+}
+/* drag-to-reorder (tab bar: press & hold; settings: drag handle) */
+let suppressClick = { t: 0, box: null };
+function makeSortable(container, { axis, handle, longPress, onEnd }) {
+  container.addEventListener('pointerdown', e => {
+    const item = e.target.closest('[data-sort]'); if (!item || !container.contains(item)) return;
+    if (handle && !e.target.closest(handle)) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const sx = e.clientX, sy = e.clientY; let started = false, base = axis === 'x' ? sx : sy, timer = null;
+    const pos = ev => axis === 'x' ? ev.clientX : ev.clientY;
+    const begin = () => { started = true; item.classList.add('dragging'); container.classList.add('sorting'); try { navigator.vibrate && navigator.vibrate(12); } catch {} };
+    const cleanup = () => { clearTimeout(timer); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', end); window.removeEventListener('pointercancel', end); };
+    const move = ev => {
+      if (!started) { if (Math.hypot(ev.clientX - sx, ev.clientY - sy) > (longPress ? 10 : 4)) { if (longPress) cleanup(); else begin(); } if (!started) return; }
+      ev.preventDefault();
+      const p = pos(ev); const tr = d => item.style.transform = axis === 'x' ? `translateX(${d}px) scale(1.08)` : `translateY(${d}px)`;
+      tr(p - base);
+      const items = [...container.querySelectorAll('[data-sort]')], idx = items.indexOf(item);
+      for (const [oi, other] of items.entries()) {
+        if (other === item) continue; const r = other.getBoundingClientRect(); const mid = axis === 'x' ? r.left + r.width / 2 : r.top + r.height / 2;
+        if ((oi > idx && p > mid) || (oi < idx && p < mid)) {
+          const b = item.getBoundingClientRect(); oi > idx ? other.after(item) : other.before(item); const a = item.getBoundingClientRect();
+          base += axis === 'x' ? a.left - b.left : a.top - b.top; tr(p - base); break;
+        }
+      }
+    };
+    const end = () => { cleanup(); if (!started) return; item.classList.remove('dragging'); item.style.transform = ''; container.classList.remove('sorting'); suppressClick = { t: Date.now(), box: container };
+      onEnd([...container.querySelectorAll('[data-sort]')].map(x => x.dataset.sort)); };
+    if (longPress) timer = setTimeout(begin, 380); else if (handle) { e.preventDefault(); begin(); }
+    window.addEventListener('pointermove', move, { passive: false }); window.addEventListener('pointerup', end); window.addEventListener('pointercancel', end);
+  });
+}
+function applyNewOrder(visibleOrder) { // keep hidden tabs where they were, reorder visible ones
+  const full = tabOrder(); const hidden = full.filter(k => !visibleOrder.includes(k)); const out = []; let vi = 0;
+  full.forEach(k => out.push(hidden.includes(k) ? k : visibleOrder[vi++])); S.prefs.tabOrder = out; save();
+}
+function tabsPanel() {
+  const hid = S.prefs.hidden || [];
+  return `<div class="panel"><div class="panel-h"><b>Tabs</b></div><p class="sub" style="margin-top:-6px">Turn tabs on or off, and drag <b>≡</b> to change their order. You can also press and hold a tab in the bottom bar and drag it.</p>
+    <div id="tabSort">${tabOrder().map(k => `<div class="tab-row" data-sort="${k}"><span class="handle" aria-label="Drag to reorder">≡</span><span class="tr-ic">${ic(TABS[k][1])}</span>
+      <span class="tr-t"><b>${TABS[k][0]}</b><small>${esc(TABS[k][2])}</small></span><button class="switch ${hid.includes(k) ? '' : 'on'}" data-action="tab-toggle" data-k="${k}" aria-label="Show ${TABS[k][0]}"></button></div>`).join('')}</div></div>`;
 }
 
 /* ---------------- sheets ---------------- */
@@ -1369,6 +1430,7 @@ function renderSheet() {
     head = `<div class="row"><h2>Settings</h2>${closeBtn}</div>`;
     const counts = [plural(S.books.length, KINDS.books.noun), plural(S.movies.length, KINDS.movies.noun), plural(S.shows.length, KINDS.shows.noun), plural(S.recipes.length, ['recipe','recipes']), plural(S.rooms.length, ['room','rooms'])].join(' · ') + (S.cycle.periodDays.length ? ' · cycle data' : '');
     body = `<p class="sub" style="margin-top:0">Everything is saved privately on this device. ${counts}.</p>
+      ${tabsPanel()}
       <div class="panel"><div class="panel-h"><b>Background color</b>${S.prefs.bg && S.prefs.bg !== THEMES[0][1] ? `<button class="link-btn" data-action="bg" data-c="${THEMES[0][1]}">Reset</button>` : ''}</div>
         <div class="swatches">${THEMES.map(([n, c]) => { const on = (S.prefs.bg || THEMES[0][1]).toLowerCase() === c.toLowerCase(); return `<div><button class="sw ${on ? 'on' : ''}" style="--s:${c}; --k:${isDark(c) ? '#fff' : '#1E1A16'}" data-action="bg" data-c="${c}" aria-label="${n}">${on ? ic('check') : ''}</button><div class="sw-label">${n}</div></div>`; }).join('')}</div>
         <label class="custom-color"><input type="color" id="bgCustom" value="${esc(S.prefs.bg || THEMES[0][1])}"><span><b style="font-size:15px">Custom color</b><br><span class="sub">Pick any shade — text adjusts automatically.</span></span></label>
@@ -1380,6 +1442,7 @@ function renderSheet() {
   }
   inner.innerHTML = `<div class="sheet-head"><div class="grab"></div>${head}</div><div class="sheet-body" id="sheetBody">${body}</div>`;
   wrap.classList.add('open');
+  if (sheet.type === 'settings') makeSortable($('#tabSort'), { axis: 'y', handle: '.handle', onEnd: order => { S.prefs.tabOrder = order; save(); renderTabs(); } });
   if (sheet.type === 'search') { const q = $('#searchQ'); setTimeout(() => q.focus(), 280); if (sheet.q) runSearch(sheet.q); }
 }
 
@@ -1647,6 +1710,10 @@ const A = {
   'steps-reset': el => { stepsDone[el.dataset.id] = new Set(); render(); },
   // settings
   'settings': () => openSheet({ type: 'settings' }),
+  'tab-toggle': el => { const k = el.dataset.k; const hid = new Set(S.prefs.hidden || []);
+    if (hid.has(k)) { hid.delete(k); toast(`${TABS[k][0]} tab added`); } else { if (visibleTabs().length <= 1) { toast('Keep at least one tab'); return; } hid.add(k); }
+    S.prefs.hidden = [...hid]; save(); if (hid.has(tab)) { tab = visibleTabs()[0]; localStorage.setItem('ut-tab', tab); render(); } else renderTabs();
+    el.classList.toggle('on', !hid.has(k)); },
   // bloom
   'bloom-mode': el => { const m = el.dataset.m; if (m === 'preg' && !(S.cycle.preg && S.cycle.preg.lmp)) { openSheet({ type: 'preg-setup' }); return; } S.cycle.mode = m; save(); if (sheet) closeSheet(); render(); },
   'cycle-settings': () => openSheet({ type: 'cycle-settings' }),
@@ -1692,6 +1759,7 @@ function syncDraftFromForm() {
   for (const [k, v] of fd.entries()) sheet.draft[k] = (k === 'ingredients' || k === 'instructions') ? String(v).split('\n') : v;
 }
 document.addEventListener('click', e => {
+  if (Date.now() - suppressClick.t < 120 && suppressClick.box && suppressClick.box.contains(e.target)) { suppressClick.t = 0; e.preventDefault(); e.stopPropagation(); return; }
   const el = e.target.closest('[data-action]'); if (!el) return;
   const fn = A[el.dataset.action]; if (!fn) return;
   e.preventDefault(); fn(el, e);
@@ -1784,7 +1852,9 @@ function applyBind(el, rerenderAfter) {
   if (saved) S = Object.assign(DEFAULT(), saved, { goal: Object.assign(DEFAULT().goal, saved.goal), prefs: Object.assign(DEFAULT().prefs, saved.prefs), cycle: Object.assign(DEF_CYCLE(), saved.cycle, { settings: Object.assign(DEF_CYCLE().settings, saved.cycle && saved.cycle.settings) }) });
   applyTheme(S.prefs.bg);
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
-  if (!stacks[tab]) tab = 'books';
+  if (saved && saved.prefs && !saved.prefs.tabOrder) S.prefs.hidden = (saved.cycle && ((saved.cycle.periodDays || []).length || saved.cycle.preg)) ? [] : ['bloom'];
+  if (!stacks[tab] || (S.prefs.hidden || []).includes(tab)) tab = visibleTabs()[0] || 'books';
+  makeSortable($('#tabs'), { axis: 'x', longPress: true, onEnd: order => { applyNewOrder(order); renderTabs(); toast('Tab order saved'); } });
   history.replaceState({ root: 1 }, '');
   render();
   // Accept shared links (Android share target / ?url=)

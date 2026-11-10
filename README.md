@@ -55,6 +55,8 @@ On your phone, add it to your home screen so it opens like a regular app:
 - Daily log of flow, symptoms, mood and notes
 - **Cycle history**: every cycle's length and period length, plus your average cycle, average period and how regular you are
 
+*Bloom is off by default. Turn it on in **Settings → Tabs**.*
+
 **Pregnancy mode** (toggle at the top of the tab; your cycle data is kept)
 - Different look: soft lavender instead of rose
 - How far along you are (e.g. "12 weeks, 3 days"), your trimester, a countdown and due date
@@ -65,6 +67,8 @@ On your phone, add it to your home screen so it opens like a regular app:
 *Predictions and pregnancy info are general estimates. They aren't birth control or medical advice.*
 
 ## Make it yours
+**Settings → Tabs**: switch any tab on or off, and drag the ≡ handles to reorder them. You can also **press and hold a tab in the bottom bar and drag it** to a new spot.
+
 **Settings → Background color**: choose from 15 preset shades (light pastels through dark slate, forest, plum and night) or pick any custom color. Text, cards and accents adjust automatically so dark backgrounds stay readable, and your choice is remembered.
 
 ## Your data
