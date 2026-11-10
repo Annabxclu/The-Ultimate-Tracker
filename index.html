@@ -300,8 +300,17 @@ details.more summary::-webkit-details-marker{display:none}
 .tile{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:14px; font-size:13px; color:var(--muted); font-weight:500}
 .tile b{display:block; font-family:var(--display); font-size:30px; color:var(--ink); line-height:1.05; margin-bottom:2px}
 .tile.warn{background:#A2372B; border-color:transparent; color:rgba(255,255,255,.85)} .tile.warn b{color:#fff}
-.chore{display:grid; grid-template-columns:30px 1fr; gap:12px; align-items:start; padding:13px 0; border-bottom:1px dashed var(--line)}
-.chore:last-child{border-bottom:0}
+.chore{display:grid; grid-template-columns:30px 1fr; gap:12px; align-items:start; padding:13px 16px}
+.chore-list{padding:0 !important; overflow:hidden}
+.swipe{position:relative; border-bottom:1px dashed var(--line); overflow:hidden}
+.swipe:last-child{border-bottom:0}
+.swipe-fg{position:relative; z-index:1; background:var(--card); touch-action:pan-y; transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.swipe.dragging .swipe-fg{transition:none}
+.swipe-del{position:absolute; inset:0; background:#D2453A; display:flex; justify-content:flex-end}
+.swipe-del button{width:92px; color:#fff; font-weight:700; font-size:13px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px}
+.swipe-del .ic{width:22px; height:22px}
+.toast.has-undo{pointer-events:auto; display:flex; align-items:center; gap:14px; padding:8px 8px 8px 18px}
+.toast button{background:var(--paper); color:var(--ink); border-radius:10px; padding:7px 12px; font-weight:700; font-size:14px}
 .chore .check{margin-top:1px}
 .chore-main{text-align:left; width:100%}
 .cn{font-weight:600; font-size:16px; line-height:1.25}
@@ -478,7 +487,11 @@ function cleanText(s) {
   s = decodeEntities(s.replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, ' '));
   return decodeEntities(s).replace(/\s+/g, ' ').trim();
 }
-function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2200); }
+function toast(msg, undo) {
+  const t = $('#toast'); t.textContent = msg; t.classList.toggle('has-undo', !!undo);
+  if (undo) { const b = document.createElement('button'); b.textContent = 'Undo'; b.onclick = e => { e.stopPropagation(); undo(); t.classList.remove('show'); }; t.appendChild(b); }
+  t.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), undo ? 5000 : 2200);
+}
 function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 async function fetchJSON(url, ms = 15000) {
   const c = new AbortController(); const t = setTimeout(() => c.abort(), ms);
@@ -944,14 +957,47 @@ function toggleChore(id) {
 }
 function choreRow(c, r, showRoom) {
   const done = isChoreDone(c), rel = relDue(c.nextDue);
-  return `<div class="chore ${done ? 'done' : ''}">
+  return `<div class="swipe" data-swipe="${c.id}"><div class="swipe-del"><button data-action="chore-swipe-del" data-id="${c.id}">${ic('trash')}<span>Delete</span></button></div><div class="chore swipe-fg ${done ? 'done' : ''}">
     <button class="check ${done ? 'on' : ''}" data-action="chore-toggle" data-id="${c.id}" aria-label="Mark done">${ic('check')}</button>
     <button class="chore-main" data-action="chore-edit" data-id="${c.id}">
       <div class="cn">${esc(c.name)}</div>
       <div class="cm"><span class="fq">${esc(freqLabel(c.freq))}</span>${showRoom ? `<span>${esc(r.emoji)} ${esc(r.name)}</span>` : ''}<span class="due ${done ? '' : rel.cls}">${done ? 'Done ✓ · next ' + fmtYMD(c.nextDue) : rel.t}</span></div>
       ${!showRoom ? `<div class="chore-dates">Last done ${c.lastDone ? fmtYMD(c.lastDone) : 'never'} · Next ${fmtYMD(c.nextDue)}</div>` : ''}
-    </button></div>`;
+    </button></div></div>`;
 }
+/* swipe-left to delete chores */
+let openSwipe = null;
+function closeSwipe(except) { if (openSwipe && openSwipe !== except) { openSwipe.querySelector('.swipe-fg').style.transform = ''; openSwipe = null; } }
+function deleteChore(id) {
+  const { c, r } = findChore(id); if (!c) return; const idx = r.chores.indexOf(c);
+  r.chores.splice(idx, 1); openSwipe = null; save(); render();
+  toast(`Deleted “${c.name}”`, () => { const room = findRoom(r.id); if (!room) return; room.chores.splice(Math.min(idx, room.chores.length), 0, c); save(); render(); });
+}
+document.addEventListener('pointerdown', e => {
+  const row = e.target.closest('.swipe');
+  if (!row) { closeSwipe(); return; }
+  if (e.target.closest('.swipe-del')) return;
+  closeSwipe(row);
+  const fg = row.querySelector('.swipe-fg'); const W = row.offsetWidth;
+  const sx = e.clientX, sy = e.clientY; const startOff = row === openSwipe ? -92 : 0; let dx = 0, mode = null;
+  const move = ev => {
+    const mx = ev.clientX - sx, my = ev.clientY - sy;
+    if (!mode) { if (Math.abs(mx) < 8 && Math.abs(my) < 8) return; mode = Math.abs(mx) > Math.abs(my) ? 'h' : 'v'; if (mode === 'h') row.classList.add('dragging'); }
+    if (mode !== 'h') return;
+    ev.preventDefault(); dx = Math.min(0, startOff + mx); if (dx > 0) dx = 0;
+    fg.style.transform = `translateX(${dx}px)`;
+  };
+  const end = () => {
+    window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', end); window.removeEventListener('pointercancel', end);
+    if (!mode && startOff) { fg.style.transform = ''; openSwipe = null; suppressClick = { t: Date.now(), box: row }; return; }
+    if (mode !== 'h') return;
+    row.classList.remove('dragging'); suppressClick = { t: Date.now(), box: row };
+    if (dx < -W * 0.55) { fg.style.transform = `translateX(${-W}px)`; setTimeout(() => deleteChore(row.dataset.swipe), 180); }
+    else if (dx < -46) { fg.style.transform = 'translateX(-92px)'; openSwipe = row; }
+    else { fg.style.transform = ''; if (openSwipe === row) openSwipe = null; }
+  };
+  window.addEventListener('pointermove', move, { passive: false }); window.addEventListener('pointerup', end); window.addEventListener('pointercancel', end);
+});
 function viewChoresHome() {
   const all = allChores(); const t = todayYMD();
   const late = all.filter(x => !isChoreDone(x.c) && x.c.nextDue && daysUntil(x.c.nextDue) < 0);
@@ -970,8 +1016,8 @@ function viewChoresHome() {
   return `${brandbar()}
   <div class="page-head"><h1>Home <em>chores</em></h1><button class="icon-btn accent" data-action="room-new" aria-label="Add room">${ic('plus')}</button></div>
   ${S.rooms.length ? `<div class="tiles"><div class="tile ${late.length ? 'warn' : ''}"><b>${late.length}</b>Overdue</div><div class="tile"><b>${today.length}</b>Due today</div><div class="tile"><b>${doneToday.length}</b>Done today</div></div>` : ''}
-  ${S.rooms.length ? `<h3>Due now</h3>${now_.length ? `<div class="panel" style="padding:4px 16px">${now_.map(x => choreRow(x.c, x.r, true)).join('')}</div>` : `<div class="panel caught">✨ All caught up — nothing due today.</div>`}
-  ${week.length ? `<h3>Coming up this week</h3><div class="panel" style="padding:4px 16px">${week.map(x => choreRow(x.c, x.r, true)).join('')}</div>` : ''}` : ''}
+  ${S.rooms.length ? `<h3>Due now</h3>${now_.length ? `<div class="panel chore-list">${now_.map(x => choreRow(x.c, x.r, true)).join('')}</div>` : `<div class="panel caught">✨ All caught up — nothing due today.</div>`}
+  ${week.length ? `<h3>Coming up this week</h3><div class="panel chore-list">${week.map(x => choreRow(x.c, x.r, true)).join('')}</div>` : ''}` : ''}
   <div class="row" style="justify-content:space-between; margin:28px 0 10px"><h3 style="margin:0">Rooms · ${S.rooms.length}</h3><button class="link-btn" data-action="room-new">+ Add room</button></div>
   ${S.rooms.length ? `<div class="list">${rooms}</div>` : `<div class="empty"><div class="big">Add your first room</div>Set up the rooms in your home, then add chores to each one.<br>
     <div class="preset-grid" style="margin-top:16px">${ROOM_PRESETS.slice(0, 8).map(([e, n]) => `<button class="preset" data-action="room-quick" data-e="${e}" data-n="${n}">${e}<span>${n}</span></button>`).join('')}</div>
@@ -983,7 +1029,7 @@ function viewRoom(r) {
   return `<div class="topbar"><button class="back" data-action="back">${ic('back')} Chores</button><button class="icon-btn" data-action="room-edit" data-id="${r.id}" aria-label="Edit room">${ic('edit')}</button></div>
   <div class="page-head"><div><div style="font-size:40px;line-height:1;margin-bottom:8px">${esc(r.emoji)}</div><h1 style="font-size:38px">${esc(r.name)}</h1><div class="sub" style="margin-top:8px">${plural(r.chores.length, ['chore','chores'])} · ${r.chores.filter(isChoreDone).length} done</div></div>
   <button class="icon-btn accent" data-action="chore-new" data-room="${r.id}" aria-label="Add chore">${ic('plus')}</button></div>
-  ${chores.length ? `<div class="panel" style="padding:4px 16px">${chores.map(c => choreRow(c, r, false)).join('')}</div>
+  ${chores.length ? `<div class="panel chore-list">${chores.map(c => choreRow(c, r, false)).join('')}</div>
     <button class="btn soft block" style="margin-top:14px" data-action="chore-new" data-room="${r.id}">${ic('plus')} Add chore</button>`
   : `<div class="empty"><div class="big">No chores yet</div>Tap a suggestion to add it, or write your own.
     <div class="sugg">${suggestionsFor(r.name).map(([n, f]) => `<button data-action="chore-suggest" data-room="${r.id}" data-n="${esc(n)}" data-f="${f}">+ ${esc(n)} <small>${freqLabel(f)}</small></button>`).join('')}</div>
@@ -1742,6 +1788,7 @@ const A = {
   'room-emoji': el => { sheet.draft.name = $('#roomName').value; sheet.draft.emoji = el.dataset.e; renderSheet(); },
   'room-del': () => { const r = findRoom(sheet.id); if (!confirm(`Delete ${r.name} and its ${plural(r.chores.length, ['chore','chores'])}?`)) return; S.rooms = S.rooms.filter(x => x.id !== r.id); save(); closeSheet(() => { if (top_().v === 'room') goBack(); else render(); }); },
   'chore-toggle': el => toggleChore(el.dataset.id),
+  'chore-swipe-del': el => deleteChore(el.dataset.id),
   'chore-new': el => openSheet({ type: 'chore', id: null, draft: { roomId: el.dataset.room, name: '', freq: 'weekly', lastDone: '', nextDue: todayYMD(), nextEdited: false } }),
   'chore-edit': el => { const { c, r } = findChore(el.dataset.id); openSheet({ type: 'chore', id: c.id, draft: { ...c, roomId: r.id, nextEdited: true } }); },
   'chore-suggest': el => { newChore(el.dataset.room, el.dataset.n, el.dataset.f); save(); render(); toast('Chore added'); },

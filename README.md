@@ -45,6 +45,7 @@ On your phone, add it to your home screen so it opens like a regular app:
 - Set how often: **daily, weekly, monthly, quarterly or annually**
 - Each chore shows the **date it was last done** and the **date it's next due**; next due is worked out automatically and you can change it
 - **Checkbox** to mark a chore done: it logs today and schedules the next date (tap again to undo)
+- **Swipe left on a chore to delete it** (short swipe shows a Delete button, long swipe deletes); an **Undo** button appears for a few seconds
 - Home screen shows what's **overdue**, **due today** and **coming up this week** across every room
 
 ### 🌸 Bloom: cycle & pregnancy
